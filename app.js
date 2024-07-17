@@ -1,6 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
+import { ValidationError } from "express-validation";
 dotenv.config()
 import userRoutes from "./src/Routes/userRoutes.js";
 import authRoutes from "./src/Routes/authRoutes.js";
@@ -13,6 +14,13 @@ const app = express()
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true}))
+
+app.use(function(err, req, res, next) {
+    if (err instanceof ValidationError) {
+      return res.status(err.statusCode).json(err)
+    }
+    return res.status(500).json(err)
+  })
 
 connectDB();
 

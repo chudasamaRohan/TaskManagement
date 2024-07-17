@@ -59,7 +59,7 @@ export const deleteUserCon = async(req,res) => {
         const userId = req.params.id
         const deleteUser = await deleteUserSer(userId)
         if(deleteUser && deleteUser._id){
-            return res.status(200).send("Deletes Succefully.")
+            return res.status(200).send("Delete Succefully.")
         }
         return res.status(404).send(deleteUser)
     } catch (error) {

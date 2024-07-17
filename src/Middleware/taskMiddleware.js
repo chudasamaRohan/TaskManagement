@@ -7,5 +7,5 @@ export const isItMyTask = async(req,res,next) => {
     if(isMyTask.length){
         next()
     }
-    return res.status(401).send("Task not found or you are not authorized to update this task")
+    return res.status(401).send("Task not found or you are not authorized to this task")
 }

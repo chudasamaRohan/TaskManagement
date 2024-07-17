@@ -1,5 +1,5 @@
-import {createTaskService,getMyTasksService,getTaskListService,updateTaskServices} from "../Services/taskServices.js"
-
+import {createTaskService,getMyTasksService,getTaskListService,updateTaskServices,deleteTaskService, assignTaskService,assignTaskListService} from "../Services/taskServices.js"
+import mongoose from "mongoose"
 
 export const createTaskController = async(req,res) => {
    try {
@@ -52,5 +52,46 @@ export const updateTaskController = async(req,res) => {
         return res.status(404).send(updateTask)
     } catch (error) {
         throw error
+    }
+}
+
+export const deleteTaskConroller = async(req,res) => {
+        try {
+            const taskId = req.params.id
+            const deleteUser = await deleteTaskService(taskId)
+            if(deleteUser && deleteUser._id){
+                return res.status(200).send("Delete Succefully.")
+            }
+            return res.status(404).send(deleteUser)
+        } catch (error) {
+            throw error       
+        }
+}
+
+export const assignTaskController = async(req,res) => {
+    try {
+        const taskId = new mongoose.Types.ObjectId(req.body.taskId); 
+        const assigenId = new mongoose.Types.ObjectId(req.body.assigenId);
+
+
+          const assignTask = await assignTaskService({taskId,assigenId})
+            if(assignTask && assignTask._id){
+                return res.status(200).send("Task Assign Succesfully.")
+            }
+            return res.status(404).send(assignTask)
+    } catch (error) {
+        throw error
+    }
+}
+
+export const assignTaskListController = async(req,res) => {
+    try {
+        const taskList = await assignTaskListService()
+        if(taskList.length){
+            return res.status(200).send(taskList)
+        }
+        return res.status(404).send("AssignTask Does not exits.")
+    } catch (error) {
+            throw error       
     }
 }
